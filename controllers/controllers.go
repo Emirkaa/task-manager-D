@@ -21,7 +21,7 @@ func CreateTask(c *gin.Context) {
 	}
 
 	if j.Title == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Название задачи обязательно"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Title is required"})
 		return
 	}
 
