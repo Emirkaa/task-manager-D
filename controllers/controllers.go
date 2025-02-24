@@ -3,16 +3,14 @@ package controllers
 import (
 	"net/http"
 	"taskmanager/models"
-	"taskmanager/utills"
 	"taskmanager/task"
 
-	"github.com/gin-gonic/gin"
 	"net/http"
-	
-	
+
+	"github.com/gin-gonic/gin"
 )
 
-var taskrepo = task.TaskRepository
+var taskrepo = task.TaskRepository // Мне нужно инкапсулировать логику работы с данными, иначе будет непонятное очко :D
 
 
 func CreateTask(c *gin.Context) {
@@ -24,7 +22,7 @@ func CreateTask(c *gin.Context) {
 	}
 	
 	if j.Title == ""{
-		c.JSON(http.StatusBadRequest,gin.H("error":"Название задачи обязательно"))
+		c.JSON(http.StatusBadRequest,gin.H{"error":"Название задачи обязательно"})
 		return
 	}
 
@@ -53,5 +51,7 @@ func DeleteTask(c *gin.Context){
 }
 
 func PutTask(c *gin.Context){
+	id := c.Param("id")
+	err := taskrepo.
 
 }
