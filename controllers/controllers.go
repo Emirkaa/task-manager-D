@@ -12,7 +12,6 @@ import (
 
 var taskrepo = task.TaskRepository // Мне нужно инкапсулировать логику работы с данными, иначе будет непонятное очко :D
 
-
 func CreateTask(c *gin.Context) {
 	var j = models.Task{}
 	error1 := c.ShouldBindJSON(&j)
@@ -20,9 +19,9 @@ func CreateTask(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": error1.Error()})
 		return
 	}
-	
-	if j.Title == ""{
-		c.JSON(http.StatusBadRequest,gin.H{"error":"Название задачи обязательно"})
+
+	if j.Title == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Название задачи обязательно"})
 		return
 	}
 
@@ -30,28 +29,28 @@ func CreateTask(c *gin.Context) {
 
 }
 
-func GetTask(c *gin.Context){
+func GetTask(c *gin.Context) {
 	id := c.Param("id")
-	j,err := task.GetByID(id)
-	if err != nil{
-		c.JSON(http.StatusBadRequest,gin.H{"error":"task not found"})
+	j, err := task.GetByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "task not found"})
 		return
 	}
-	c.JSON(http.StatusOK,gin.H{"task":task})
+	c.JSON(http.StatusOK, gin.H{"task": task})
 }
 
-func DeleteTask(c *gin.Context){
+func DeleteTask(c *gin.Context) {
 	id := c.Param("id")
 	err := taskrepo.Delete("id")
-	if err != nil{
-		c.JSON(http.StatusNotFound, gin.H{"error":"id not found"})
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
 		return
 	}
-	c.JSON(http.StatusOK,gin.H{"message":"Task deleted"})
+	c.JSON(http.StatusOK, gin.H{"message": "Task deleted"})
 }
 
-func PutTask(c *gin.Context){
+func PutTask(c *gin.Context) {
 	id := c.Param("id")
-	err := taskrepo.
+	err := taskrepo.Update("id")
 
 }
