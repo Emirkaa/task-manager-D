@@ -15,6 +15,6 @@ func CreateTask(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "created", "goal": j})
+	c.JSON(http.StatusCreated, gin.H{"message": "created", "goal": j})
 
 }
