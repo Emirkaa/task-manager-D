@@ -36,7 +36,7 @@ func GetTask(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "task not found"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"task": task})
+	c.JSON(http.StatusOK, gin.H{"task": j})
 }
 
 func DeleteTask(c *gin.Context) {
