@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	"gorm.io/gorm"
 )
 
 var newErr = errors.New("Title cant be empty")
