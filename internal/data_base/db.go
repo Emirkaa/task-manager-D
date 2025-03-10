@@ -26,6 +26,6 @@ func InitDB() {
 	}
 
 	DB = db
-	fmt.Println("Successful to connect to db")
+	fmt.Println("Successful to connect to dbb")
 
 }
