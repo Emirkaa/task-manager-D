@@ -1,32 +1,56 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"context"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"taskmanager/internal/controllers"
-	"taskmanager/internal/data_base/db"
+	"taskmanager/internal/database"
 	"taskmanager/internal/services"
 	"taskmanager/internal/utills"
 )
 
 func main() {
-	Logger := utills.NewLogger()
+	logger := utills.NewLogger()
 
-	db, err := db.InitDB()
+	db, err := database.InitDB()
 	if err != nil {
-		Logger.Fatal("Failed to connect to the db", err)
+		logger.Fatal("Failed to connect to the db", err)
 	}
 
 	Tservice := services.NewService(db)
 
 	Tcontroller := controllers.NewController(Tservice)
 
-	http.Handler("/tasks", Tcontroller.GetTasks)
-	http.Handler("/tasks/create", Tcontroller.CreateTask)
+	http.HandleFunc("/tasks", Tcontroller.GetTasks)
+	http.HandleFunc("/tasks/create", Tcontroller.CreateTask)
 
 	port := "8080"
-	fmt.Printf("Server is avalible on port %s/n", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	srv := &http.Server{
+		Addr:    ":" + port,
+		Handler: nil,
+	}
+
+	go func() {
+		logger.Infof("Server if available on port %s\n", port)
+		if err := srv.ListenAndServe(); err != nil {
+			logger.Fatal("Server Failed: ", err)
+		}
+
+	}()
+
+	q := make(chan os.Signal, 1)
+	signal.Notify(q, syscall.SIGINT, syscall.SIGTERM)
+	<-q
+
+	err = srv.Shutdown(context.Background()) // можно nil.
+	if err != nil {
+		logger.Fatal("Server disable error")
+
+	}
+	logger.Info("Server disable")
 
 }
